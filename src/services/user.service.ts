@@ -1,6 +1,6 @@
 import axios from "axios";
 import type { User } from "../types/user.type";
-const URL = "https://6863d24a88359a373e967374.mockapi.io/";
+const URL = "https://68b886ddb715405043287a6f.mockapi.io/";
 const GIT_URL = "https://api.github.com"
 
 async function getUsers(): Promise<User[]> {
