@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { useQueryClient } from "react-query";
+import { FixedSizeList as List } from "react-window";
+import AutoSizer from "react-virtualized-auto-sizer";
 import { useDeleteUser, useGetUsers } from "../../hooks/user";
 import type { User } from "../../types/user.type";
 import UserCard from "../../components/user-card/user-card";
-import { UserEdit } from "../../components/user-edit/user-edit";
+import UserEdit from "../../components/user-edit/user-edit";
 import { Spinner } from "react-bootstrap";
 
 const Container = styled.div`
@@ -40,6 +42,23 @@ export default function UserList() {
         );
     }
 
+    const Row = ({ index, style }: { index: number; style: any }) => {
+        if (!data) return null;
+
+        const user = data[index];
+        console.log("renderizou linha", index);
+
+        return (
+            <div style={style}>
+                <UserCard
+                user={user}
+                onClickEdit={() => setSelectedUser(user)}
+                onClickDelete={() => handleDelete(user)}
+                />
+            </div>
+        );
+    };
+
     return(
         <Container>
             <Head >
@@ -48,14 +67,29 @@ export default function UserList() {
             <br />
             {isLoading && <Spinner animation="border" />}
             {isError && <h4>Ocorreu algum problema :(</h4>}
-            {data?.map((user: User, index) => (
+            {/* {data?.map((user: User, index) => (
+                console.log("renderizou card", index),
                 <UserCard 
                     key={index}
                     user={user} 
                     onClickEdit={() => setSelectedUser(user)}
                     onClickDelete={()=> handleDelete(user)}
                 />
-            ))}
+            ))} */}
+            {data && ( //Otimização para renderizar apenas os itens visíveis
+                <AutoSizer>
+                    {({ width }) => (
+                        <List
+                        height={window.innerHeight - 100}
+                        width={width}
+                        itemCount={data.length}
+                        itemSize={200}
+                        >
+                        {Row}
+                        </List>
+                    )}
+                </AutoSizer>
+            )}
             {selectedUser && (
                 <UserEdit
                     user={selectedUser}

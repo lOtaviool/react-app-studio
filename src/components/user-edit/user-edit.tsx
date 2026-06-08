@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useRef } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import { useQueryClient } from "react-query";
 import type { User } from "../../types/user.type";
@@ -10,16 +10,18 @@ interface Props {
   handleClose: () => void;
 }
 
-export function UserEdit({ show, handleClose, user }: Props) {
-  const [value, setValue] = useState(user.name);
+const UserEdit = memo(({ show, handleClose, user }: Props) => {
+  console.log("renderizou edit");
+  // const [value, setValue] = useState(user.name);
   const queryClient = useQueryClient();
+  const nameRef = useRef<HTMLInputElement | null>(null);
 
   const { mutate } = useEditUser()
 
   const handleSubimit = () =>{
 
     mutate(
-        { user: user, value },
+        { user: user, value: nameRef.current?.value || "" },
         {
             onSuccess: () => {
                 queryClient.invalidateQueries("user-list");
@@ -38,9 +40,9 @@ export function UserEdit({ show, handleClose, user }: Props) {
         <Form.Label>Nome</Form.Label>
         <Form.Control
           data-testid="input-text"
-          onChange={(e) => setValue(e.target.value)}
           type="text"
-          value={value}
+          ref={nameRef}
+          defaultValue={user.name}
         />
       </Modal.Body>
       <Modal.Footer>
@@ -53,4 +55,6 @@ export function UserEdit({ show, handleClose, user }: Props) {
       </Modal.Footer>
     </Modal>
   );
-}
+})
+
+export default UserEdit;

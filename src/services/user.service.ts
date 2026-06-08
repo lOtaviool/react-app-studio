@@ -27,9 +27,16 @@ async function getUserDetails(userName: string): Promise<any> {
   return response.data;
 }
 
+async function getUserId(userId: string): Promise<User> {
+  const response = await axios.get<User>(`${URL}data/${userId}`);
+
+  return response.data;
+}
+
 export const api = {
   getUsers,
   getUserDetails,
   updateUserName,
   deleteUser,
+  getUserId,
 };

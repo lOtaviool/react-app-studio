@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Button, Image } from "react-bootstrap";
 import styled from "styled-components";
 import type { User } from "../../types/user.type";
@@ -7,6 +8,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   margin-bottom: 2rem;
+  margin: 2px 10px;
   width: auto;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 1rem;
@@ -28,7 +30,8 @@ interface Props {
   onClickDelete: () => void;
 }
 
-export default function UserCard({user, onClickEdit, onClickDelete}:Props) {
+const UserCard = memo(({user, onClickEdit, onClickDelete}:Props) => {
+
     return(
         <Container role="user-card">
             <div style={{display:"flex", alignItems: "center", gap:"20px", width: "100%"}}>
@@ -49,4 +52,6 @@ export default function UserCard({user, onClickEdit, onClickDelete}:Props) {
             </Content>
         </Container>
     )
-}
+})
+
+export default UserCard;
