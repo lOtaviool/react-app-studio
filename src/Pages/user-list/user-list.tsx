@@ -36,7 +36,7 @@ export default function UserList() {
             {
                 onSuccess: () => {
                     queryClient.invalidateQueries("user-list");
-                    console.log("Delected with success!")
+                    // console.log("Delected with success!")
                 }
             }
         );
@@ -46,7 +46,7 @@ export default function UserList() {
         if (!data) return null;
 
         const user = data[index];
-        console.log("renderizou linha", index);
+        // console.log("renderizou linha", index);
 
         return (
             <div style={style}>
@@ -80,12 +80,12 @@ export default function UserList() {
                 <AutoSizer>
                     {({ width }) => (
                         <List
-                        height={window.innerHeight - 100}
-                        width={width}
-                        itemCount={data.length}
-                        itemSize={200}
+                            height={window.innerHeight - 100}
+                            width={width}
+                            itemCount={data.length}
+                            itemSize={160}
                         >
-                        {Row}
+                            {Row}
                         </List>
                     )}
                 </AutoSizer>

@@ -36,7 +36,7 @@ export function useDeleteUser(){
 
 export function useGetUserDetail(userName: string){
     const { data, isFetching, isError } = useQuery({
-        queryKey: ['user-list', userName],
+        queryKey: ['user-detail', userName],
         queryFn: () => api.getUserDetails(userName),
         staleTime: 4000,
         enabled: !!userName
